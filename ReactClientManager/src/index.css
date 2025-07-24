@@ -1,0 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  min-height: 100vh;
+  width: 100vw;
+  color: aliceblue;
+  background:linear-gradient(180deg, rgb(82, 82, 116), rgb(145, 145, 161) 100%);
+}
