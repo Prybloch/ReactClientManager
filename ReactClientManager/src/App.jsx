@@ -5,6 +5,11 @@ import api from "./services/api";
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [deletingUser, setDeletingUser] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editAge, setEditAge] = useState('');
+  const [editEmail, setEditEmail] = useState('');
 
   const inputName = useRef();
   const inputAge = useRef();
@@ -24,22 +29,35 @@ function App() {
         email: inputEmail.current.value
       }
     )
+    
+    inputName.current.value = '';
+    inputAge.current.value = '';
+    inputEmail.current.value = '';
+
     getUsers();
   }
 
   async function deleteUsers(id) {
     await api.delete(`/users/${id}`)
+    setDeletingUser(null)
     getUsers();
   }
 
-  async function editUsers(id) {
-    await api.put(`/users/${id}`,
-      {
-        name: inputName.current.value,
-        age: inputAge.current.value,
-        email: inputEmail.current.value
-      }
-    )
+  async function editUsers(user) {
+    setEditingUser(user);
+    setEditName(user.name);
+    setEditAge(user.age);
+    setEditEmail(user.email);
+  }
+
+  async function saveEdit() {
+    await api.put(`/users/${editingUser.id}`, {
+      name: editName,
+      age: parseInt(editAge),
+      email: editEmail
+    })
+
+    setEditingUser(null);
     getUsers();
   }
 
@@ -57,6 +75,29 @@ function App() {
         <button type="button" onClick={createUsers}>Cadastrar</button>
       </form>
 
+      {editingUser && (
+        <div className="overlay">
+        <div className="edit-section">
+          <h2>Editando: {editingUser.name}</h2>
+          <input placeholder="Nome" type="text" value={editName} onChange = {(e) => setEditName(e.target.value)}/>
+          <input placeholder="Idade" type="number" value={editAge} onChange = {(e) => setEditAge(e.target.value)} />
+          <input placeholder="E-mail" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)}/>
+          <button onClick={saveEdit}>Salvar</button>
+          <button onClick={() => setEditingUser(null)}>Cancelar</button>
+        </div>
+        </div>
+      )}
+
+      {deletingUser && (
+        <div className="overlay">
+          <div className="delete-section">
+          <p>Você tem certeza que deseja excluir {deletingUser.name}?</p>
+          <button onClick={() => deleteUsers(deletingUser.id)}>Sim</button>
+          <button onClick={() => setDeletingUser(null)}>Cancelar</button>
+          </div>
+        </div>
+      )}
+
       {users.map((user) => (
         <div key={user.id} className="card">
           <div>
@@ -70,10 +111,10 @@ function App() {
               Email: <span>{user.email}</span>
             </p>
           </div>
-          <button onClick={() => editUsers(user)}>
-            <p>Editar</p>
+          <button className="edit-button" onClick={() => editUsers(user)}>
+            Editar
           </button>
-          <button onClick={() => deleteUsers(user.id)}>
+          <button onClick={() => setDeletingUser(user)}>
             <img src={Trash} />
           </button>
         </div>
