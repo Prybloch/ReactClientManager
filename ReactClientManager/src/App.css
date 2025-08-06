@@ -47,11 +47,24 @@ form {
     padding-left: 10px;
     outline: none;
   }
+
+  & input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  & .error-message {
+    color: rgb(224, 125, 125);
+    padding-left: 5px;
+  }
 }
 
 .card {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
   background-color: rgba(37, 24, 71, 0.781);
   margin: 10px;
   padding: 10px;
@@ -69,14 +82,12 @@ form {
 
   & .edit-button {
     color: green;
-   
   }
 
   & button {
     background-color: transparent;
     border: none;
     cursor: pointer;
-
   }
 
   & button:hover {
@@ -90,11 +101,11 @@ form {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6); 
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .edit-section {
@@ -158,5 +169,45 @@ form {
     cursor: pointer;
     color: rgba(255, 255, 255, 0.815);
     font-size: 15px;
+  }
+}
+.button-link {
+  border-radius: 20px;
+  background-color: rgba(75, 25, 121, 0.774);
+  padding: 2px 20px 2px 20px;
+  height: 2.5rem;
+  width: 100%;
+  max-width: 300px;
+  min-width: 140px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.829);
+  font-size: 15px;
+}
+
+.toast-success {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #2e0e49;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  animation: fadeOut 3s forwards;
+  z-index: 9999;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
